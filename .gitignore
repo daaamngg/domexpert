@@ -1,0 +1,39 @@
+# зависимости
+/node_modules
+
+# next.js
+/.next/
+/out/
+/build
+
+# misc
+.DS_Store
+*.pem
+npm-debug.log*
+
+# env
+.env*
+!.env.example
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# оригиналы фото — в репозиторий не нужны, идут только готовые из public/photos
+/photos-src/*
+!/photos-src/README.md
+
+# черновики сообщений клиенту — переписка, не код; репозиторий публичный
+/СООБЩЕНИЕ-*.txt
+
+# рабочие скриншоты (45 МБ) — в репозиторий только два, на которые ссылается DESIGN.md
+/design/*.png
+!/design/palitry-2-375.png
+!/design/shrifty-28-10.png
+
+# служебные снимки скиллов (impeccable, hallmark)
+/.impeccable/
+/.hallmark/

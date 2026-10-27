@@ -1,0 +1,12 @@
+# Не загружать на Vercel: исходники фото (на сайте — public/photos),
+# рабочие заметки, переписка с Сергеем, служебные папки скиллов и сборки.
+photos-src
+design
+.impeccable
+.hallmark
+.next
+node_modules
+*.txt
+CLAUDE.md
+DESIGN.md
+PRODUCT.md

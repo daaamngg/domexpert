@@ -1,0 +1,232 @@
+{
+  "images": {
+    "/photos/demontazh.jpg": {
+      "base": "/photos/demontazh",
+      "width": 540,
+      "height": 720,
+      "widths": [
+        480,
+        540
+      ]
+    },
+    "/photos/droblenie.jpg": {
+      "base": "/photos/droblenie",
+      "width": 479,
+      "height": 640,
+      "widths": [
+        479
+      ]
+    },
+    "/photos/drova.jpg": {
+      "base": "/photos/drova",
+      "width": 540,
+      "height": 720,
+      "widths": [
+        480,
+        540
+      ]
+    },
+    "/photos/gazon.jpg": {
+      "base": "/photos/gazon",
+      "width": 540,
+      "height": 720,
+      "widths": [
+        480,
+        540
+      ]
+    },
+    "/photos/korchevanie.jpg": {
+      "base": "/photos/korchevanie",
+      "width": 540,
+      "height": 722,
+      "widths": [
+        480,
+        540
+      ]
+    },
+    "/photos/kultivaciya-2.jpg": {
+      "base": "/photos/kultivaciya-2",
+      "width": 540,
+      "height": 720,
+      "widths": [
+        480,
+        540
+      ]
+    },
+    "/photos/kultivaciya.jpg": {
+      "base": "/photos/kultivaciya",
+      "width": 540,
+      "height": 511,
+      "widths": [
+        480,
+        540
+      ]
+    },
+    "/photos/listva.jpg": {
+      "base": "/photos/listva",
+      "width": 540,
+      "height": 720,
+      "widths": [
+        480,
+        540
+      ]
+    },
+    "/photos/pokos.jpg": {
+      "base": "/photos/pokos",
+      "width": 540,
+      "height": 720,
+      "widths": [
+        480,
+        540
+      ]
+    },
+    "/photos/sneg.jpg": {
+      "base": "/photos/sneg",
+      "width": 540,
+      "height": 627,
+      "widths": [
+        480,
+        540
+      ]
+    },
+    "/photos/spil.jpg": {
+      "base": "/photos/spil",
+      "width": 540,
+      "height": 720,
+      "widths": [
+        480,
+        540
+      ]
+    },
+    "/photos/urozhay.jpg": {
+      "base": "/photos/urozhay",
+      "width": 540,
+      "height": 720,
+      "widths": [
+        480,
+        540
+      ]
+    },
+    "/photos/vk-drova.jpg": {
+      "base": "/photos/vk-drova",
+      "width": 960,
+      "height": 1280,
+      "widths": [
+        480,
+        768,
+        960
+      ]
+    },
+    "/photos/vk-gazon-podgotovka.jpg": {
+      "base": "/photos/vk-gazon-podgotovka",
+      "width": 1440,
+      "height": 1920,
+      "widths": [
+        480,
+        768,
+        1080,
+        1440
+      ]
+    },
+    "/photos/vk-kacheli.jpg": {
+      "base": "/photos/vk-kacheli",
+      "width": 960,
+      "height": 1280,
+      "widths": [
+        480,
+        768,
+        960
+      ]
+    },
+    "/photos/vk-korchevanie-tehnika.jpg": {
+      "base": "/photos/vk-korchevanie-tehnika",
+      "width": 960,
+      "height": 720,
+      "widths": [
+        480,
+        768,
+        960
+      ]
+    },
+    "/photos/vk-pokos-brigada.jpg": {
+      "base": "/photos/vk-pokos-brigada",
+      "width": 960,
+      "height": 1280,
+      "widths": [
+        480,
+        768,
+        960
+      ]
+    },
+    "/photos/vk-propolka.jpg": {
+      "base": "/photos/vk-propolka",
+      "width": 1440,
+      "height": 1920,
+      "widths": [
+        480,
+        768,
+        1080,
+        1440
+      ]
+    },
+    "/photos/vk-raschistka.jpg": {
+      "base": "/photos/vk-raschistka",
+      "width": 1280,
+      "height": 1707,
+      "widths": [
+        480,
+        768,
+        1080,
+        1280
+      ]
+    },
+    "/photos/vk-zemlya.jpg": {
+      "base": "/photos/vk-zemlya",
+      "width": 1440,
+      "height": 1920,
+      "widths": [
+        480,
+        768,
+        1080,
+        1440
+      ]
+    },
+    "/photos/vrediteli.jpg": {
+      "base": "/photos/vrediteli",
+      "width": 1080,
+      "height": 675,
+      "widths": [
+        480,
+        768,
+        1080
+      ]
+    },
+    "/photos/vyvoz-musora.jpg": {
+      "base": "/photos/vyvoz-musora",
+      "width": 540,
+      "height": 720,
+      "widths": [
+        480,
+        540
+      ]
+    },
+    "/photos/yamy.jpg": {
+      "base": "/photos/yamy",
+      "width": 520,
+      "height": 526,
+      "widths": [
+        480,
+        520
+      ]
+    },
+    "/photos/zemlya.jpg": {
+      "base": "/photos/zemlya",
+      "width": 540,
+      "height": 720,
+      "widths": [
+        480,
+        540
+      ]
+    }
+  }
+}

@@ -1,0 +1,334 @@
+@import "tailwindcss";
+
+/* ============================================================
+   ПАЛИТРА «Графит» — выбор Арслана 26.10.2026 (DESIGN.md).
+   Графит — кнопки и заголовки. Кофе — мелкие детали, которые должны
+   читаться как текст (стрелки, значки, ссылки). Дерево — только украшение
+   без смысла для чтения (черта под номером телефона).
+   Фон — светлый с ЛЁГКИМ древесным оттенком (просьба Арслана 26.10:
+   «слегка видный древесный оттенок»). Заметно спокойнее бежа stroivizion
+   (#F1E7D5) — там беж насыщенный, здесь едва тёплый серый, и кнопки графит,
+   а не эспрессо, так что сайты не близнецы.
+   Зелёный «мох» убран: зелёный на белом — первое, что приходит в голову
+   для участков, так сделаны все самарские конкуренты (разбор 26.10).
+   Контрасты посчитаны (норма WCAG AA — 4.5):
+     белый на графите 16.7; text-dim на bg 5.8, на surface-2 5.0;
+     кофе как текст на bg 6.9; на тёмной полосе: светлый текст 14.4,
+     приглушённый 7.9, светлое дерево (значки) 6.2.
+   ============================================================ */
+:root {
+  /* 27.10 Арслан: «фон едва тёплый древесный, прям немного» — фон чуть
+     теплее прежнего #F3EEE7, но всё ещё светлее и спокойнее бежа stroivizion. */
+  --bg: #f2eadf;          /* фон — светлый, едва тёплый, «древесный» */
+  --surface: #fffcf7;     /* карточки, подписи к фото */
+  --surface-2: #e7dccd;   /* футер, плашки, заглушки фото */
+
+  --ink: #1f1e1c;         /* графит — заголовки */
+  --text: #3e3a34;        /* основной текст */
+  --text-dim: #5f5a52;    /* подписи */
+
+  --accent: #1f1e1c;      /* графит — кнопки, активная вкладка */
+  --accent-deep: #3a3834; /* наведение на кнопку: чуть светлее, а не темнее —
+                             темнее графита только чёрный */
+  --coffee: #6b4a35;      /* кофе — стрелки, значки, ссылки */
+  --wood: #a8743f;        /* дерево — только украшение (черта под номером) */
+  /* Эспрессо — тёмный кофе: цифры этапов, плашка скидки (27.10).
+     Светлый текст на эспрессо 11.7, светлое дерево 5.1. */
+  --espresso: #3b2a20;
+  /* Светлый дуб — шапка калькулятора (28.10: «цвет как у скидки, только
+     сильно полегче»). Графит на нём 10.0, основной текст 6.9. */
+  --oak: #dbc3a3;
+
+  /* Текст на графите и кофе — не чистый белый, а тёплый (аудит Hallmark 28.10:
+     чистый #fff на тёплой странице — примета шаблона). Контраст на графите 16.3. */
+  --on-accent: #fffaf2;
+  /* Подложка под панелью заявки и тени — тоже токены, без цветов в разметке. */
+  --backdrop: rgba(31, 30, 28, 0.45);
+  --shadow-icon: 0 8px 18px -10px rgba(107, 74, 53, 0.75);
+  --shadow-fab: 0 10px 24px -12px rgba(31, 30, 28, 0.7);
+
+  /* Тёмная полоса («Почему мы»): графитовый фон, светлый текст. */
+  --on-dark: #f3eee7;
+  --on-dark-dim: #b9b2a7;
+  --wood-light: #c8935c;  /* значки на тёмном */
+
+  /* Ошибки в форме. Кирпичный, а не «тревожный» красный — в тон палитре;
+     контраст на фоне 5.9, на карточке 6.6. */
+  --danger: #a3322a;
+
+  /* Линии с оттенком кофе, а не серые — поддерживают тёплый фон. */
+  --border: rgba(107, 74, 53, 0.15);
+  --border-strong: rgba(107, 74, 53, 0.3);
+
+  /* Высота нижней панели контактов на телефоне (ContactBar). */
+  --contact-bar-h: 64px;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-text: var(--text);
+  --color-text-dim: var(--text-dim);
+  --color-accent: var(--accent);
+  --color-accent-deep: var(--accent-deep);
+  --color-coffee: var(--coffee);
+  --color-wood: var(--wood);
+  --color-espresso: var(--espresso);
+  --color-oak: var(--oak);
+  --color-on-accent: var(--on-accent);
+  --shadow-icon: var(--shadow-icon);
+  --shadow-fab: var(--shadow-fab);
+  --color-on-dark: var(--on-dark);
+  --color-on-dark-dim: var(--on-dark-dim);
+  --color-wood-light: var(--wood-light);
+  --color-danger: var(--danger);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --font-display: var(--font-heading), Georgia, serif;
+  --font-sans: var(--font-body), system-ui, sans-serif;
+}
+
+@layer base {
+  /* clip, а не hidden: случайно широкий элемент не даст горизонтальную
+     прокрутку на телефоне, а sticky и якоря продолжают работать. */
+  html,
+  body {
+    overflow-x: clip;
+  }
+  html {
+    scroll-behavior: smooth;
+    /* Якоря (#uslugi и т.п.) не прячутся под закреплённой шапкой. */
+    scroll-padding-top: 4.5rem;
+  }
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    /* Место под нижнюю панель контактов на телефоне. */
+    padding-bottom: calc(var(--contact-bar-h) + env(safe-area-inset-bottom));
+  }
+  @media (min-width: 1024px) {
+    body {
+      padding-bottom: 0;
+    }
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    color: var(--ink);
+    text-wrap: balance;
+    /* Длинное слово в крупном заголовке переносится, а не вылезает за экран. */
+    overflow-wrap: break-word;
+    min-width: 0;
+  }
+  /* Без одиночного слова на последней строке абзаца («строительство.», «звонка.»). */
+  p,
+  li,
+  dd {
+    text-wrap: pretty;
+  }
+  /* Выделение текста и подчёркивания — в палитре сайта, а не браузерные по умолчанию. */
+  ::selection {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  a {
+    text-underline-offset: 0.2em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 640px) {
+    .container-x {
+      padding-inline: 1.5rem;
+    }
+  }
+
+  /* Кнопки-«таблетки» (подход stroivizion). */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 2.75rem;
+    padding-inline: 1.25rem;
+    border-radius: 999px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.1s;
+  }
+  /* Нажатие видно: кнопка чуть «проседает» (аудит Hallmark: не было :active). */
+  .btn:active,
+  .icon-btn:active {
+    transform: translateY(1px);
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  .btn-primary:hover {
+    background: var(--accent-deep);
+  }
+  .btn-outline {
+    border: 1px solid var(--border-strong);
+    color: var(--ink);
+    background: var(--surface);
+  }
+  .btn-outline:hover {
+    border-color: var(--coffee);
+    color: var(--coffee);
+  }
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    color: var(--ink);
+    transition: background-color 0.2s, color 0.2s;
+  }
+  .icon-btn:hover {
+    background: var(--surface-2);
+    color: var(--coffee);
+  }
+
+  /* Пометка «заглушка / уточняется» — видна, но не кричит. */
+  .placeholder-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    border: 1px dashed var(--border-strong);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+
+  .contact-bar {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Ползунок калькулятора — цвет системы, без самодельного трека. */
+  .calc-range {
+    accent-color: var(--accent);
+    height: 1.75rem;
+  }
+
+  /* Плашка «Заявка · N» на телефоне — над нижней панелью звонка. */
+  .request-fab {
+    bottom: calc(var(--contact-bar-h) + env(safe-area-inset-bottom) + 12px);
+  }
+
+  /* Панель заявки: на телефоне — лист снизу, шире — окно по центру. */
+  .request-dialog::backdrop {
+    background: var(--backdrop);
+  }
+  .request-dialog[open] {
+    animation: sheet-in 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes sheet-in {
+    from {
+      transform: translateY(24px);
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .request-dialog[open] {
+      animation: none;
+    }
+  }
+
+  /* Плашка «под дерево»: шапка калькулятора (светлый дуб, bg-oak).
+     Сам класс даёт эспрессо — тёмный вариант (27.10 был у скидки, 28.10 убран).
+     Волокна — шум SVG (feTurbulence), растянутый по горизонтали: частота
+     по x 0.004, по y 0.09 — получаются длинные продольные полосы, как у доски.
+     stitchTiles — края плитки шума стыкуются, без шва на широком экране.
+     Цвет полос — светлое дерево, прозрачность слоя 0.2: текстура читается
+     вблизи, но не мешает тексту (контраст считается по эспрессо). */
+  .wood-plank {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-color: var(--espresso);
+  }
+  .wood-plank::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    /* Светлая «доска» (приглашение калькулятора) задаёт свою прозрачность
+       через --grain-opacity, фон — классом bg-surface-2. */
+    opacity: var(--grain-opacity, 0.2);
+    background-size: 640px 320px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='320'%3E%3Cfilter id='w' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.004 0.09' numOctaves='3' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.78 0 0 0 0 0.58 0 0 0 0 0.36 1.6 0 0 0 -0.62'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E");
+  }
+
+  /* Частые вопросы: значок «плюс» поворачивается в «крестик» у открытого. */
+  .faq-item summary {
+    list-style: none;
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item .faq-icon {
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .faq-item[open] .faq-icon {
+    transform: rotate(45deg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .faq-item .faq-icon {
+      transition: none;
+    }
+  }
+
+  /* Раскрытие калькулятора на месте: высота 0 → по содержимому
+     (grid-template-rows 0fr → 1fr плавно анимируется, height: auto — нет). */
+  /* Сознательное исключение из правила «видно без скриптов» (Hallmark 62):
+     за кнопкой — пошаговый калькулятор, без JavaScript он всё равно не работает;
+     без скриптов видны приглашение, номер телефона и форма заявки ниже. */
+  .reveal {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+      grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.3s ease;
+  }
+  .reveal > * {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .reveal[data-open="true"] {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      transition: none;
+    }
+  }
+
+  /* Горизонтальная лента без полосы прокрутки (переключатель категорий). */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
