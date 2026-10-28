@@ -35,7 +35,8 @@ export const nav: NavItem[] = [
   { label: "Услуги", href: "/#uslugi" },
   { label: "Калькулятор", href: "/#kalkulyator" },
   { label: "Наши работы", href: "/#raboty" },
-  { label: "Заявка", href: "/#zayavka" },
+  // 28.10: «Заявка» убрана вместе с формой на главной (блок «Оставить заявку»
+  // заменён на «Как связаться»). Вернуть: { label: "Заявка", href: "/#zayavka" }.
   { label: "Контакты", href: "/#kontakty" },
 ];
 
@@ -150,6 +151,8 @@ export const calcConfig = {
   roundTo: pricingData.roundTo,
   units: pricingData.units as Record<UnitId, Unit>,
   invite: pricingData.invite,
+  /** Мелкая строка под калькулятором — видна всегда, и свёрнутым, и раскрытым. */
+  footNote: pricingData.footNote,
   /** Шаг «Детали»: на цену не влияют, уходят в заявку. */
   details: pricingData.details as Record<"where" | "when", { label: string; options: string[] }>,
 };
@@ -165,10 +168,14 @@ export const heroImage = getService(hero.imageService)?.service.image;
 export const whyUs = contentData.whyUs as { title: string; items: WhyItem[] };
 export const steps = contentData.steps as { title: string; items: { title: string; text: string }[] };
 export const works = contentData.works as { title: string; exampleLabel: string; note: string; items: string[] };
-export const discount = contentData.discount;
+/** hidden: true — блок скидки не показывается (28.10, до ответа Сергея). */
+export const discount = contentData.discount as { title: string; text: string; placeholder?: boolean; hidden?: boolean };
 export const guides = contentData.guides;
-export type FaqItem = { q: string; a: string; placeholder?: boolean };
-export const faq = contentData.faq as { title: string; placeholderLabel: string; items: FaqItem[] };
+export type FaqItem = { q: string; a: string; placeholder?: boolean; hidden?: boolean };
+/** Вопросы с hidden: true не показываются (28.10: выезд и сроки — до ответа Сергея). */
+const faqData = contentData.faq as { title: string; placeholderLabel: string; items: FaqItem[] };
+export const faq = { ...faqData, items: faqData.items.filter((x) => !x.hidden) };
+export const contactCta = contentData.contactCta;
 
 /** Все фото работ для страницы /raboty: по одному на услугу, без повторов
  *  одного и того же снимка. Фото и подпись — из услуги, как везде. */

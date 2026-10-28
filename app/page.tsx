@@ -8,14 +8,20 @@ import DiscountBlock from "@/components/home/DiscountBlock";
 import GuidesTeaser from "@/components/home/GuidesTeaser";
 import Faq from "@/components/home/Faq";
 import Contacts from "@/components/home/Contacts";
-import LeadSection from "@/components/home/LeadSection";
+import ContactCta from "@/components/home/ContactCta";
 import ReturnPointTracker from "@/components/nav/ReturnPointTracker";
+import { discount } from "@/lib/site";
 
 /*
  * Главная — порядок блоков согласован (CLAUDE.md → «Структура»):
  * первый экран → почему мы → услуги → калькулятор → как мы работаем →
- * наши работы → скидка → гайды → частые вопросы → заявка → контакты.
+ * наши работы → скидка → гайды → частые вопросы → как связаться → контакты.
  * Тексты и цифры — в data/*.json.
+ *
+ * 28.10 перед показом Сергею (всё обратимо):
+ *  - форма «Оставить заявку» (LeadSection) заменена на «Как связаться» (ContactCta);
+ *    вернуть — импортировать LeadSection и поставить вместо ContactCta;
+ *  - скидка скрыта: content.json → discount.hidden; вернуть — убрать hidden.
  */
 export default function HomePage() {
   return (
@@ -27,10 +33,10 @@ export default function HomePage() {
       <Calculator />
       <Steps />
       <WorksGallery />
-      <DiscountBlock />
+      {!discount.hidden && <DiscountBlock />}
       <GuidesTeaser />
       <Faq />
-      <LeadSection />
+      <ContactCta />
       <Contacts />
     </>
   );

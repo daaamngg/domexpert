@@ -5,7 +5,6 @@ import { Calculator as CalcIcon, Check, Info, Minus, Phone, Plus, RotateCcw } fr
 import { calcConfig, calcItems, categories, site, type CalcItem } from "@/lib/site";
 import { estimate, formatRub } from "@/lib/format";
 import { openRequestPanel, useRequest } from "@/lib/request";
-import LeadForm from "@/components/request/LeadForm";
 
 const STEPS = ["Работа", "Объём", "Детали", "Цена"] as const;
 
@@ -27,7 +26,8 @@ const reducedMotion = () => typeof window !== "undefined" && window.matchMedia("
 /**
  * Калькулятор. 27.10 (Арслан): структура — как в stroivizion
  * (что делаем → размер → уточнения → расчёт со списком параметров
- * и «Получить точный расчёт» с подставленными параметрами в форме),
+ * и кнопка звонка; 28.10 форма «Получить точный расчёт» убрана — сайт
+ * ничего не отправляет, параметры уходят в «Заявку» и оттуда в мессенджер),
  * а подача своя:
  *  - на главной свёрнут: блок-приглашение «под светлое дерево»,
  *    по кнопке раскрывается на месте (.reveal в globals.css). Не отдельная
@@ -51,7 +51,6 @@ export default function Calculator() {
   const [qtyText, setQtyText] = useState("");
   const [where, setWhere] = useState<string | null>(null);
   const [when, setWhen] = useState<string | null>(null);
-  const [showForm, setShowForm] = useState(false);
   const bodyRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const { add, items } = useRequest();
@@ -74,30 +73,21 @@ export default function Calculator() {
   const total = item ? estimate(item, qty) : 0;
   const minApplies = item ? item.rate * qty < item.priceFrom : false;
   const stored = item ? items.find((x) => x.serviceId === item.serviceId) : undefined;
+  // Уточнения шага 3 («В Самаре», «Как можно скорее») — вместе с объёмом
+  // уходят в «Заявку» и в текст сообщения.
+  const details = [where, when].filter((x): x is string => !!x);
+  const sameDetails = (stored?.details ?? []).join("|") === details.join("|");
   // Добавлено, но объём с тех пор поменяли — предлагаем обновить, а не «в заявке».
-  const stale = stored && (stored.qty !== qty || stored.estimate !== total);
-
-  const details = item && unit
-    ? [
-        `Объём: ${qty} ${unit.short}`,
-        ...(where ? [`${calcConfig.details.where.label}: ${where}`] : []),
-        ...(when ? [`${calcConfig.details.when.label}: ${when}`] : []),
-        `Ориентировочно: от ${formatRub(total)}`,
-      ]
-    : [];
+  const stale = stored && (stored.qty !== qty || stored.estimate !== total || !sameDetails);
 
   function pick(next: CalcItem) {
     // Другая единица (сотки ↔ метры) или первый выбор — значение по умолчанию.
     if (!item || next.unit !== item.unit) setQtyText(String(calcConfig.units[next.unit].default));
     setItemId(next.serviceId);
-    setShowForm(false);
     setStep(1);
   }
   const setQty = (n: number) => item && setQtyText(String(clampQty(item, n)));
-  function restart() {
-    setShowForm(false);
-    setStep(0);
-  }
+  const restart = () => setStep(0);
 
   const question = [
     "Что нужно сделать?",
@@ -301,16 +291,9 @@ export default function Calculator() {
                       {calcConfig.demoNote}
                     </p>
 
-                    <div className="mt-5 grid gap-2 sm:grid-cols-2">
-                      <a href={`tel:${site.phoneHref}`} className="btn btn-primary h-12 text-base">
-                        <Phone size={18} aria-hidden /> Уточнить точную цену
-                      </a>
-                      {!showForm && (
-                        <button type="button" onClick={() => setShowForm(true)} className="btn btn-outline h-12 text-base">
-                          Получить точный расчёт
-                        </button>
-                      )}
-                    </div>
+                    <a href={`tel:${site.phoneHref}`} className="btn btn-primary mt-5 h-12 w-full px-7 text-base sm:w-auto">
+                      <Phone size={18} aria-hidden /> Уточнить точную цену
+                    </a>
 
                     <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1">
                       {stored && !stale ? (
@@ -320,7 +303,7 @@ export default function Calculator() {
                       ) : (
                         <button
                           type="button"
-                          onClick={() => add({ serviceId: item.serviceId, qty, unit: item.unit, estimate: total })}
+                          onClick={() => add({ serviceId: item.serviceId, qty, unit: item.unit, estimate: total, details })}
                           className="inline-flex h-10 items-center gap-1.5 font-semibold text-coffee hover:text-ink"
                         >
                           <Plus size={17} aria-hidden /> {stale ? "Обновить в заявке" : "Добавить в заявку"}
@@ -330,19 +313,14 @@ export default function Calculator() {
                         <RotateCcw size={16} aria-hidden /> Другая работа
                       </button>
                     </div>
-
-                    {showForm && (
-                      <div className="mt-6 border-t border-border pt-5">
-                        <p className="mb-4 text-[15px] text-text">Параметры расчёта уже в заявке. Оставьте имя и телефон, мы свяжемся и всё уточним.</p>
-                        <LeadForm services={[item.serviceId]} details={details} />
-                      </div>
-                    )}
                   </div>
                 )}
               </div>
             </div>
           </div>
         </div>
+        {/* 28.10: мелкая строка под калькулятором — видна и у свёрнутого. */}
+        <p className="mt-3 text-sm text-text-dim">{calcConfig.footNote}</p>
       </div>
     </section>
   );

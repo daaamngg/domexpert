@@ -1,60 +1,75 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Copy, Phone, Trash2, X } from "lucide-react";
+import { Check, Phone, Trash2, X } from "lucide-react";
 import { calcConfig, getService, messengerLabels, messengers, site } from "@/lib/site";
 import { formatRub, priceLabel } from "@/lib/format";
 import { OPEN_REQUEST_EVENT, useRequest, type RequestItem } from "@/lib/request";
+import { copyText } from "@/lib/clipboard";
 import { MaxIcon, TelegramIcon } from "@/components/icons";
-import LeadForm from "@/components/request/LeadForm";
 
 /** «Покос травы, 6 соток — ориентировочно от 2 400 ₽» */
-function lineFor(item: RequestItem): { title: string; detail: string } | null {
+function lineFor(item: RequestItem): { title: string; detail: string; short: string } | null {
   const found = getService(item.serviceId);
   if (!found) return null;
   const s = found.service;
   if (item.qty && item.unit) {
     const unit = calcConfig.units[item.unit];
     const est = item.estimate ? `, ориентировочно от ${formatRub(item.estimate)}` : "";
-    return { title: s.title, detail: `${item.qty} ${unit.short}${est}` };
+    // «В Самаре» → «в Самаре»: внутри скобок со строчной, имена собственные не трогаем.
+    const extra = (item.details ?? []).map((d) => `, ${d.charAt(0).toLowerCase()}${d.slice(1)}`).join("");
+    // short — для сообщения в мессенджер: объём и уточнения, без цены
+    // (цена ориентировочная, точную называет Сергей после разговора).
+    return { title: s.title, detail: `${item.qty} ${unit.short}${extra}${est}`, short: `${s.title} (${item.qty} ${unit.short}${extra})` };
   }
-  return { title: s.title, detail: priceLabel(s) };
+  return { title: s.title, detail: priceLabel(s), short: s.title };
 }
+
+type Copied = "ok" | "fail" | null;
 
 /**
  * Панель «Ваша заявка» — нативный <dialog>: Esc, фокус внутри и подложка
  * работают сами, без библиотек. Открывается событием (openRequestPanel).
  *
- * 27.10: внутри — форма заявки с отмеченными услугами (данные пока никуда
- * не уходят, см. TODO в LeadForm). Ниже запасной путь: позвонить, написать
- * в мессенджер или скопировать список.
+ * 28.10: формы с именем и телефоном больше нет — сайт ничего не отправляет
+ * на сервер. Вместо неё три кнопки: Telegram и MAX копируют в буфер
+ * «Здравствуйте! Интересуют услуги: …» и открывают чат (вставить и отправить
+ * человек может сам), «Позвонить» открывает звонок, а панель со списком
+ * остаётся на экране — по нему удобно диктовать.
+ * Форма лежит в components/request/LeadForm.tsx, вернуть — см. там.
  */
 export default function RequestPanel() {
   const ref = useRef<HTMLDialogElement>(null);
   const { items, remove, clear } = useRequest();
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<Copied>(null);
 
   useEffect(() => {
-    const open = () => ref.current?.showModal();
+    const dialog = ref.current;
+    const open = () => dialog?.showModal();
+    // Подсказку «скопировано» прячем при закрытии: в следующий раз список может быть другим.
+    const reset = () => setCopied(null);
     window.addEventListener(OPEN_REQUEST_EVENT, open);
-    return () => window.removeEventListener(OPEN_REQUEST_EVENT, open);
+    dialog?.addEventListener("close", reset);
+    return () => {
+      window.removeEventListener(OPEN_REQUEST_EVENT, open);
+      dialog?.removeEventListener("close", reset);
+    };
   }, []);
 
   const lines = items.map((it) => ({ it, line: lineFor(it) })).filter((x) => x.line);
+  const message = `Здравствуйте! Интересуют услуги: ${lines.map(({ line }) => line!.short).join(", ")}`;
 
-  async function copy() {
-    const text =
-      "Здравствуйте! Хочу заказать:\n" +
-      lines.map(({ line }) => `— ${line!.title} (${line!.detail})`).join("\n");
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2500);
-    } catch {
-      // Буфер обмена недоступен (старый браузер, запрет) — молча ничего не делаем,
-      // список и так виден на экране.
-    }
+  // Обработчик НЕ отменяет переход по ссылке: копирование запускается
+  // в момент нажатия (так браузер его разрешает), а чат открывается как
+  // обычная ссылка — без window.open, который блокируют на телефонах.
+  function copyMessage() {
+    copyText(message).then((ok) => setCopied(ok ? "ok" : "fail"));
   }
+
+  const chats = [
+    { id: "telegram", url: messengers.telegram, Icon: TelegramIcon },
+    { id: "max", url: messengers.max, Icon: MaxIcon },
+  ] as const;
 
   return (
     <dialog
@@ -90,32 +105,32 @@ export default function RequestPanel() {
               ))}
             </ul>
 
-            {/* Форма берёт услуги из заявки. Данные пока никуда не уходят — TODO в LeadForm. */}
-            <div className="mt-4">
-              <LeadForm services={items.map((it) => it.serviceId)} />
-            </div>
-
-            <p className="mt-6 text-sm text-text-dim">Или свяжитесь с нами сами: список можно скопировать в сообщение. {site.freeConsultation}.</p>
+            <p className="mt-4 text-sm text-text-dim">
+              Напишите нам: список услуг скопируется в сообщение. Или позвоните. {site.freeConsultation}.
+            </p>
             <div className="mt-3 flex flex-col gap-2">
-              <a href={`tel:${site.phoneHref}`} className="btn btn-primary h-12 text-base">
-                <Phone size={18} aria-hidden /> Позвонить нам
+              {chats.map(({ id, url, Icon }) =>
+                url ? (
+                  <a key={id} href={url} target="_blank" rel="noopener noreferrer" onClick={copyMessage} className="btn btn-primary h-12 text-base">
+                    <Icon size={20} /> Написать в {messengerLabels[id]}
+                  </a>
+                ) : null,
+              )}
+              <a href={`tel:${site.phoneHref}`} className="btn btn-outline h-12 text-base">
+                <Phone size={18} aria-hidden /> Позвонить
               </a>
-              <button type="button" onClick={copy} className="btn btn-outline h-12 text-base" aria-live="polite">
-                <Copy size={18} aria-hidden /> {copied ? "Скопировано" : "Скопировать список"}
-              </button>
-              <div className="flex gap-2">
-                {messengers.telegram && (
-                  <a href={messengers.telegram} target="_blank" rel="noopener noreferrer" className="btn btn-outline h-12 flex-1 text-base">
-                    <TelegramIcon size={20} /> {messengerLabels.telegram}
-                  </a>
+
+              {/* Подсказка после копирования. Живая область — диктор зачитает её сам. */}
+              <p role="status" className="min-h-6 text-center text-sm">
+                {copied === "ok" && (
+                  <span className="inline-flex items-center gap-1.5 font-semibold text-ink">
+                    <Check size={16} strokeWidth={2.6} className="text-coffee" aria-hidden /> Текст скопирован, вставьте его в чат
+                  </span>
                 )}
-                {messengers.max && (
-                  <a href={messengers.max} target="_blank" rel="noopener noreferrer" className="btn btn-outline h-12 flex-1 text-base">
-                    <MaxIcon size={20} /> {messengerLabels.max}
-                  </a>
-                )}
-              </div>
-              <button type="button" onClick={clear} className="mt-1 self-center text-sm text-text-dim underline underline-offset-4 hover:text-coffee">
+                {copied === "fail" && <span className="text-text">Не удалось скопировать, перечислите услуги в чате сами</span>}
+              </p>
+
+              <button type="button" onClick={clear} className="self-center text-sm text-text-dim underline underline-offset-4 hover:text-coffee">
                 Очистить заявку
               </button>
             </div>

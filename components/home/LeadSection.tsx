@@ -2,6 +2,9 @@ import { site } from "@/lib/site";
 import LeadForm from "@/components/request/LeadForm";
 
 /**
+ * НЕ ПОДКЛЮЧЁН с 28.10: на главной вместо него «Как связаться» (ContactCta).
+ * Оставлен, чтобы вернуть форму, когда будет бэкенд (см. app/page.tsx).
+ *
  * «Оставить заявку» — форма на главной, перед контактами.
  * Данные пока никуда не уходят (TODO в LeadForm.tsx).
  */
