@@ -29,7 +29,7 @@ const reducedMotion = () => typeof window !== "undefined" && window.matchMedia("
  * и кнопка звонка; 28.10 форма «Получить точный расчёт» убрана — сайт
  * ничего не отправляет, параметры уходят в «Заявку» и оттуда в мессенджер),
  * а подача своя:
- *  - на главной свёрнут: блок-приглашение «под светлое дерево»,
+ *  - на главной свёрнут: однотонный кофейный блок-приглашение,
  *    по кнопке раскрывается на месте (.reveal в globals.css). Не отдельная
  *    страница: на телефоне не нужно грузить её и потом возвращаться;
  *  - по одному вопросу на экран вместо формы со всеми полями сразу;
@@ -100,12 +100,13 @@ export default function Calculator() {
     <section id="kalkulyator" className="border-t border-border py-12 lg:py-24">
       <div className="container-x">
         <div className="overflow-hidden rounded-xl border border-border bg-surface">
-          {/* Приглашение — кофейная «доска» с волокнами, в цвет кнопки «Заявка»
-              (28.10 Арслан: «в цвет кнопок, как в заявке»; до этого был светлый дуб).
+          {/* Приглашение — однотонный кофе, в цвет кнопки «Заявка»
+              (28.10 Арслан: «однотонный цвет, а не дерево»; до этого кофе
+              с волокнами .wood-plank, ещё раньше светлый дуб).
               Светлый текст на кофе 7.6, приглушённый 7.0. Кнопка светлая:
               графитовая на кофе почти сливается (контраст краёв 2.1).
               Лаконично: заголовок, строка, кнопка — без списка шагов. */}
-          <div className="wood-plank bg-coffee [--grain-opacity:0.28]">
+          <div className="bg-coffee">
             <div className="flex flex-col gap-4 p-5 sm:p-7 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:px-10 lg:py-9">
               <div>
                 <h2 className="text-[2rem] font-bold leading-tight tracking-[-0.01em] text-on-accent lg:text-[2.75rem]">{calcConfig.invite.title}</h2>
