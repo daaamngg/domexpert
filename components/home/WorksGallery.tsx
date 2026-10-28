@@ -48,7 +48,7 @@ export default function WorksGallery() {
         </ul>
 
         <Link href="/raboty" className="btn btn-outline mt-7 h-12 w-full px-6 text-base sm:w-auto lg:mt-10">
-          Смотреть все проекты
+          Смотреть все услуги
         </Link>
       </div>
     </section>

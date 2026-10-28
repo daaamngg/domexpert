@@ -33,14 +33,19 @@ const onest = Onest({
   adjustFontFallback: true,
 });
 
+const title = `${site.name} — уборка и благоустройство участков в Самаре`;
+const description =
+  "Уборка территории, покос, спил и корчевание, вывоз мусора, огород, заборы, дрова. Своя техника, фиксированная цена после звонка. Самара и Самарская область.";
+
 export const metadata: Metadata = {
-  title: {
-    default: `${site.name} — уборка и благоустройство участков в Самаре`,
-    template: `%s · ${site.name}`,
-  },
-  description:
-    "Уборка территории, покос, спил и корчевание, вывоз мусора, огород, заборы, дрова. Своя техника, фиксированная цена после звонка. Самара и Самарская область.",
-  openGraph: { type: "website", locale: "ru_RU", siteName: site.name },
+  // Адрес сайта — чтобы картинка-превью (app/opengraph-image.jpg) в Telegram,
+  // ВК и WhatsApp шла полной ссылкой. Сменить при переезде на свой домен.
+  metadataBase: new URL("https://domashniy-ekspert.vercel.app"),
+  title: { default: title, template: `%s · ${site.name}` },
+  description,
+  // Превью ссылки в мессенджерах: заголовок, строка и фото первого экрана
+  // (картинка и значки — файлами в app/: opengraph-image.jpg, icon.svg, apple-icon.png).
+  openGraph: { type: "website", locale: "ru_RU", siteName: site.name, title, description },
   // Демо: в поиск не пускаем, пока Сергей не утвердил сайт.
   robots: { index: false, follow: false },
 };

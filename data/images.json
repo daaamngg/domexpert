@@ -1,5 +1,14 @@
 {
   "images": {
+    "/photos/demontazh-tehnika.jpg": {
+      "base": "/photos/demontazh-tehnika",
+      "width": 540,
+      "height": 880,
+      "widths": [
+        480,
+        540
+      ]
+    },
     "/photos/demontazh.jpg": {
       "base": "/photos/demontazh",
       "width": 540,
@@ -217,6 +226,15 @@
       "widths": [
         480,
         520
+      ]
+    },
+    "/photos/zabor.jpg": {
+      "base": "/photos/zabor",
+      "width": 640,
+      "height": 515,
+      "widths": [
+        480,
+        640
       ]
     },
     "/photos/zemlya.jpg": {

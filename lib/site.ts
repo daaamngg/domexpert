@@ -166,7 +166,10 @@ export const hero = contentData.hero;
 /** Фото первого экрана — фото той услуги, что подписана на нём (content.json → hero.imageService). */
 export const heroImage = getService(hero.imageService)?.service.image;
 export const whyUs = contentData.whyUs as { title: string; items: WhyItem[] };
-export const steps = contentData.steps as { title: string; items: { title: string; text: string }[] };
+/** hidden: true — «Как мы работаем» не показывается (28.10: вместо него отзывы). */
+export const steps = contentData.steps as { title: string; items: { title: string; text: string }[]; hidden?: boolean };
+/** Отзывы: пока только пустые места (slots), настоящих отзывов ещё нет. */
+export const reviews = contentData.reviews as { title: string; subtitle: string; text: string; slots: number };
 export const works = contentData.works as { title: string; exampleLabel: string; note: string; items: string[] };
 /** hidden: true — блок скидки не показывается (28.10, до ответа Сергея). */
 export const discount = contentData.discount as { title: string; text: string; placeholder?: boolean; hidden?: boolean };

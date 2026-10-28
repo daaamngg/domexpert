@@ -15,7 +15,7 @@
 // ============================================================
 
 import { useSyncExternalStore } from "react";
-import type { UnitId } from "@/lib/site";
+import { getService, type UnitId } from "@/lib/site";
 
 export type RequestItem = {
   serviceId: string;
@@ -39,7 +39,12 @@ function load(): RequestItem[] {
   try {
     const raw = window.localStorage.getItem(KEY);
     const parsed = raw ? JSON.parse(raw) : [];
-    items = Array.isArray(parsed) ? parsed.filter((x) => typeof x?.serviceId === "string") : [];
+    // Только услуги, которые ещё есть на сайте: скрытую (hidden) или
+    // переименованную услугу панель не покажет, а счётчик «Заявка 1»
+    // при этом обещал бы непустой список.
+    items = Array.isArray(parsed)
+      ? parsed.filter((x) => typeof x?.serviceId === "string" && getService(x.serviceId))
+      : [];
   } catch {
     // Приватный режим, запрет хранилища, битые данные — просто пустой список.
     items = [];

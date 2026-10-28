@@ -100,14 +100,16 @@ export default function Calculator() {
     <section id="kalkulyator" className="border-t border-border py-12 lg:py-24">
       <div className="container-x">
         <div className="overflow-hidden rounded-xl border border-border bg-surface">
-          {/* Приглашение — «светлая доска»: цвет светлого дуба с древесными
-              волокнами (28.10 Арслан: «цвет как у скидки, только сильно полегче»).
+          {/* Приглашение — кофейная «доска» с волокнами, в цвет кнопки «Заявка»
+              (28.10 Арслан: «в цвет кнопок, как в заявке»; до этого был светлый дуб).
+              Светлый текст на кофе 7.6, приглушённый 7.0. Кнопка светлая:
+              графитовая на кофе почти сливается (контраст краёв 2.1).
               Лаконично: заголовок, строка, кнопка — без списка шагов. */}
-          <div className="wood-plank bg-oak [--grain-opacity:0.4]">
+          <div className="wood-plank bg-coffee [--grain-opacity:0.28]">
             <div className="flex flex-col gap-4 p-5 sm:p-7 lg:flex-row lg:items-center lg:justify-between lg:gap-10 lg:px-10 lg:py-9">
               <div>
-                <h2 className="text-[2rem] font-bold leading-tight tracking-[-0.01em] lg:text-[2.75rem]">{calcConfig.invite.title}</h2>
-                <p className="mt-1.5 max-w-xl text-[17px] text-text">{calcConfig.invite.text}</p>
+                <h2 className="text-[2rem] font-bold leading-tight tracking-[-0.01em] text-on-accent lg:text-[2.75rem]">{calcConfig.invite.title}</h2>
+                <p className="mt-1.5 max-w-xl text-[17px] text-on-dark">{calcConfig.invite.text}</p>
               </div>
               {!open && (
                 <button
@@ -115,7 +117,7 @@ export default function Calculator() {
                   onClick={() => setOpen(true)}
                   aria-expanded={open}
                   aria-controls="calc-body"
-                  className="btn btn-primary h-[52px] w-full shrink-0 px-7 text-[17px] sm:w-auto"
+                  className="btn h-[52px] w-full shrink-0 bg-surface px-7 text-[17px] text-ink hover:bg-bg sm:w-auto"
                 >
                   <CalcIcon size={19} aria-hidden /> {calcConfig.invite.button}
                 </button>

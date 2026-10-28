@@ -51,7 +51,8 @@
         {
           "id": "uborka-posle-zimy",
           "title": "Уборка после зимы",
-          "priceFrom": null
+          "priceFrom": null,
+          "image": "/photos/sneg.jpg"
         },
         {
           "id": "uborka-pod-stroitelstvo",
@@ -92,7 +93,8 @@
           "id": "posadka-rasteniy",
           "title": "Посадка растений",
           "priceFrom": 2000,
-          "note": "Зависит от объёма, нужна консультация"
+          "note": "Зависит от объёма, нужна консультация",
+          "image": "/photos/zemlya.jpg"
         },
         {
           "id": "posadka-gazona",
@@ -178,7 +180,7 @@
           "id": "demontazh",
           "title": "Демонтаж и снос построек, вывоз строительного мусора",
           "priceFrom": 5000,
-          "image": "/photos/demontazh.jpg"
+          "image": "/photos/demontazh-tehnika.jpg"
         },
         {
           "id": "ustranenie-defektov",
@@ -196,7 +198,8 @@
           "id": "ustanovka-zabora",
           "title": "Установка забора",
           "priceFrom": 30000,
-          "note": "Зависит от длины и объёма"
+          "note": "Зависит от длины и объёма",
+          "image": "/photos/zabor.jpg"
         },
         {
           "id": "zabor-demontazh-dostavka",

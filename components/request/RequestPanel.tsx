@@ -45,7 +45,10 @@ export default function RequestPanel() {
 
   useEffect(() => {
     const dialog = ref.current;
-    const open = () => dialog?.showModal();
+    // Уже открыта — повторный showModal() бросил бы ошибку.
+    const open = () => {
+      if (dialog && !dialog.open) dialog.showModal();
+    };
     // Подсказку «скопировано» прячем при закрытии: в следующий раз список может быть другим.
     const reset = () => setCopied(null);
     window.addEventListener(OPEN_REQUEST_EVENT, open);
